@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
+    <!-- Google Fonts Roboto -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+    />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript" src="js/landingTable.js"></script>
+  </head>
+  <body>
+    <!-- Start your project here-->
+    <div class="container">
+      <!-- Table  -->
+      <div class="row">
+        <table class="table table-bordered" id="landingTable"></table>
+      </div>
+      <!-- Rows Count  -->
+      <div id="tableButtonsDiv" class="row" hidden>
+        <div class="col">
+          <button type="button" class="btn btn-danger" id="deleteRowButton">Delete Row(s)</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-info" id="addRowButton">Add Row</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-primary" disabled>
+            Total Rows
+            <span class="badge badge-light" id="rowsCount"></span>
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-primary" disabled>
+            Selected Rows
+            <span class="badge badge-light" id="selectedRowsCount"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
