@@ -10,6 +10,7 @@ router.use(cors({
   origin: '*'
 }));
 
+
 router.use(express.static(__dirname + '/js'));
 
 

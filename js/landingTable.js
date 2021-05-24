@@ -19,7 +19,6 @@ $(document).ready(function(){
     function attachButtonEventListners() {
       $("#addRowButton").click(function() {
         addRow();
-        $("#addRowButton").prop("disabled", true);
       });
 
       $("#deleteRowButton").click(function() {
@@ -28,17 +27,16 @@ $(document).ready(function(){
     }
 
     function sendUserData(userData) {
+      console.log(userData);
       $.ajax({
         url: "http://localhost:3000/userData",
         type: 'POST',
-        dataType: 'text',
         data: userData,
         success: (res) => {
           console.log("Send User Data Sent.");
         },
         error: (xhr, status, error) => {
           console.log("Send User Data Failed.");
-          console.log(xhr);
         }
       });
 
@@ -48,6 +46,8 @@ $(document).ready(function(){
     }
 
     function addRow() {
+      $("#addRowButton").prop("disabled", true);
+
       var rowIdHash = {};
       $("#landingTable tbody tr").each(function() {
         rowIdHash[this.id] = true;
@@ -128,30 +128,33 @@ $(document).ready(function(){
           // The format for all checkbox are "checkbox{id}", slice the first 7
           // characters to get the id.
           id = id.slice(8, id.length);
-          ids += " " + id.toString();
+          ids += " " + id;
         }
       });
-      idsToDelete["ids"] = ids;
-
+      // To remove spaces before
+      idsToDelete["ids"] = ids.substring(1);
+      console.log(idsToDelete);
       $.ajax({
         url: "http://localhost:3000/deleteUser",
         type: 'POST',
-        dataType: 'text',
-        data: idsToDelete,
+        contentType: "application/json",
+        data: JSON.stringify(idsToDelete),
         success: (res) => {
           console.log("Delete User Request Sent.");
+          console.log(idsToDelete);
+          idsToDelete = idsToDelete["ids"].split(" ");
+          $.each(idsToDelete, function(index, id) {
+            $("#landingTable #row"+id).remove();
+          });
+
         },
         error: (xhr, status, error) => {
           console.log("Delete User Request Failed.");
           console.log(xhr);
         }
+      }).done(function() {
+        $("#addRowButton").prop("disabled", false);
       });
-      
-      $.each(idsToDelete, function(index, id) {
-        $("#landingTable #row"+id).remove();
-      });
-      // If not in db and is here, and user wants to delete that row, we can activate
-      // Add Row again.
     }
 
     function tableCounters(){

@@ -4,7 +4,9 @@ var app = express();
 var router = express.Router();
 
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
 
 // Model
 var db = [
@@ -253,23 +255,30 @@ router.get("/usersCount", function (req, res, next) {
   res.send(db.length.toString());
 });
 
-router.post("/userData", urlencodedParser, function (req, res) {
+router.post("/userData", function (req, res) {
   console.log("Received User Data.");
+
   let userData = JSON.parse(JSON.stringify(req.body));
+  console.log(userData);
   // This goes in Service
   db.push(userData);
+
+  //console.log(db);
+
+  res.set('Content-Type', 'application/json');
+  res.status(200).send({"message": "User Added"});
 });
 
-router.post("/deleteUser", urlencodedParser, function (req, res) {
+router.post("/deleteUser", function (req, res) {
   console.log("Received Delete User Request.");
 
   let idsToDelete = req.body["ids"];
-
   let tempIndex;
+
   // This goes in Service
-  for(let i=1; i<idsToDelete.length; i++) {
+  for(let i=0; i<idsToDelete.length; i++) {
     tempIndex = db.findIndex(function(userData) {
-      if( userData["id"] == idsToDelete[i] ) {
+      if( userData["id"] === idsToDelete[i] ) {
         return true;
       }
     });
@@ -277,6 +286,11 @@ router.post("/deleteUser", urlencodedParser, function (req, res) {
       db.splice(tempIndex, 1);
     }
   }
+
+  console.log(db);
+
+  res.set('Content-Type', 'application/json');
+  res.status(200).send({"message": "User Deleted"});
 });
 
 module.exports = router;
