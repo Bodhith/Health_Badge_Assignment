@@ -5,10 +5,6 @@ Webpage is responsive. <br />
 Since localhost, the CORS are set to 'Allow All'. <br /> 
 User doesn't have to fill all the input fields, but atleast one is madatory. <br /> 
 
-Webpage is responsive. <br />
-Since localhost, the CORS are set to 'Allow All'. <br />
-User doesn't have to fill all the input fields, but atleast one is madatory. <br />
-
 
 Important Instructions:
 1) Press 'Enter' on keyboard when done with entering user feilds.
