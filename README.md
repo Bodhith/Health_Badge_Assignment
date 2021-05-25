@@ -1,8 +1,14 @@
 # HEALTHBADGE_ASSIGNMENT
 
+<<<<<<< Updated upstream
 Webpage is responsive. <br /> 
 Since localhost, the CORS are set to 'Allow All'. <br /> 
 User doesn't have to fill all the input fields, but atleast one is madatory. <br /> 
+=======
+Webpage is responsive. <br />
+Since localhost, the CORS are set to 'Allow All'. <br />
+User doesn't have to fill all the input fields, but atleast one is madatory. <br />
+>>>>>>> Stashed changes
 
 Important Instructions:
 1) Press 'Enter' on keyboard when done with entering user feilds.
@@ -27,4 +33,7 @@ Screenshots
 ![image](https://user-images.githubusercontent.com/34181215/119454134-ce8aba00-bd55-11eb-951e-a59d7065fce3.png)
 
 ![image](https://user-images.githubusercontent.com/34181215/119454167-dea29980-bd55-11eb-9fa0-2b6f5d37cf65.png)
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
