@@ -1,16 +1,18 @@
 # HEALTHBADGE_ASSIGNMENT
 
-Instruction to Run
+Webpage is responsive.
+User doesn't have to fill all the input fields, but atleast one is madatory.
 
+Important Instructions:
+1) Press 'Enter' on keyboard when done with entering user feilds.
 
-Code is Extendable for 
-
+Code is Extendable for:
 1) Search in table.
 2) Horizonal Scrollable table.
 3) Table Pages.
 4) Column filtering.
 
-Code implementation has to change for 
+Code implementation has to change for:
 1) Double click on fields to edit it.
 
 ScreenShots
