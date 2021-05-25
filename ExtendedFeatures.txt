@@ -1,5 +1,0 @@
-Double click on fields to edit it.
-Search in table.
-Horizonal Scrollable table.
-Table Pages.
-Column filtering.
