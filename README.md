@@ -1,4 +1,4 @@
--# HEALTHBADGE_ASSIGNMENT
+# HEALTHBADGE_ASSIGNMENT
 
 
 Webpage is responsive. <br /> 
