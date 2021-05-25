@@ -245,13 +245,13 @@ var db = [
 
 router.get("/", function (req, res, next) {
   console.log("Table Data Sent.");
-  res.type("text");
+  res.set('Content-Type', 'text');
   res.send(JSON.stringify(db));
 });
 
 router.get("/usersCount", function (req, res, next) {
   console.log("Users Count Sent.");
-  res.type("text");
+  res.set('Content-Type', 'text');
   res.send(db.length.toString());
 });
 
