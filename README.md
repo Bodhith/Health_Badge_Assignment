@@ -7,5 +7,5 @@ Code is Extendable for
 3) Table Pages.
 4) Column filtering.
 
-Code implemention has to change for 
+Code implementation has to change for 
 1) Double click on fields to edit it.
