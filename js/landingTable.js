@@ -175,6 +175,12 @@ $(document).ready(function(){
           $.each(idsToDelete, function(index, id) {
             $("#landingTable #row"+id).remove();
           });
+          // Dont have to call server for updateRowsCount
+          // client side modification is optimal
+          var rowsCount = $("#rowsCount").html();
+          rowsCount = Number(rowsCount)-idsToDelete.length;
+          $("#rowsCount").html(rowsCount);
+
           console.log(idsToDelete);
         },
         error: (xhr, status, error) => {
@@ -242,7 +248,9 @@ $(document).ready(function(){
           $("#tableButtonsDiv").prop('hidden', false);
           $("#tableButtonsDiv").prop('hidden', false);
 
-          $("#rowsCount").html(tableData.length);
+          // Dont have to call server for updateRowsCount
+          // client side modification is optimal
+          $("#rowsCount").html(JSON.parse(tableData).length);
           $("#selectedRowsCount").html(0);
 
           tableCounters();
