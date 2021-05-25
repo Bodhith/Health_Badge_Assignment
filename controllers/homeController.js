@@ -279,7 +279,7 @@ router.post("/deleteUser", function (req, res) {
   // This goes in Service
   for(let i=0; i<idsToDelete.length; i++) {
     tempIndex = db.findIndex(function(userData) {
-      if( userData["id"] === Number(idsToDelete[i]) ) {
+      if( userData["id"] == Number(idsToDelete[i]) ) {
         return true;
       }
     });

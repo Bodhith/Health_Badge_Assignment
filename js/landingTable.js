@@ -18,7 +18,7 @@ $(document).ready(function(){
 
     function attachButtonEventListners() {
       $("#addRowButton").click(function() {
-        addRow();
+        insertInputsRow();
       });
 
       $("#deleteRowButton").click(function() {
@@ -27,7 +27,7 @@ $(document).ready(function(){
 
       $(document).keypress(function(event) {
         if(event.keyCode == 13) {
-          updateRow();
+          addRow();
         }
       });
     }
@@ -47,46 +47,66 @@ $(document).ready(function(){
       });
     }
 
-    function updateRow() {
-      var headingKeys = Object.keys(headings);
-
-      var userData = {};
-
-      var newRowId =  $("#landingTable tbody").children().last()[0].id;
-      //remove "row" in "row{id}" to get newRowId
-      newRowId = newRowId.substr(3);
-
-      userData["id"] = newRowId;
-      $("#landingTable tbody #row"+newRowId+" input:not(:checkbox)").each(function(index, userInput) {
-          // +1 becuase we added ID already into our userData above
-          // userData["id"] should be added separetly because this JQuery
-          // selector starts from 3rd feild ignoring check box and ID however,
-          // our headingKeys starts from ID, to counter that 1 offset we add +1
-          userData[headingKeys[index+1]] = userInput.value;
-      });
-      // Do this only after User Data sucessfully sent to server
-      $.when(sendUserData(userData)).done(function(userData) {
-        $("#addRowButton").prop("disabled", false);
-
+    function addRow(userData) {
+      if( $("#addRowButton").prop("disabled") ) {
         var headingKeys = Object.keys(headings);
 
-        $("#landingTable tbody #row"+userData["id"]+" input:not(:checkbox)").parent().remove();
+        var userData = {};
 
-        $.each(headingKeys, function(index, headingKey) {
-          if( headingKey != "id" ) {
-            $("#landingTable tbody #row"+userData["id"]).append(`
-              <td>
-                `+userData[headingKey]+`
-              </td>
-            `);
+        var newRowId =  $("#landingTable tbody").children().last()[0].id;
+        //remove "row" in "row{id}" to get newRowId
+        newRowId = newRowId.substr(3);
+
+        userData["id"] = newRowId;
+
+        //Get Data From user
+        $("#landingTable tbody #row"+newRowId+" input:not(:checkbox)").each(function(index, userInput) {
+            // +1 becuase we added ID already into our userData above
+            // userData["id"] should be added separetly because this JQuery
+            // selector starts from 3rd feild ignoring check box and ID however,
+            // our headingKeys starts from ID, to counter that 1 offset we add +1
+            userData[headingKeys[index+1]] = userInput.value;
+        });
+
+        let isEmpty = true;
+        // Find if User Feilds are empty expect for ID
+        $.each(userData, function(index, userField){
+          if( index != "id" ) {
+            if( userField.length > 0 ) {
+              isEmpty = false;
+              return;
+            }
           }
         });
 
-        updateRowsCount();
-      });
+        if( isEmpty ){
+          console.log("Enter User Fields");
+          return ;
+        }
+
+        // Do this only after User Data sucessfully sent to server
+        $.when(sendUserData(userData)).done(function(userData) {
+
+          $("#addRowButton").prop("disabled", false);
+
+          $("#landingTable tbody #row"+userData["id"]+" input:not(:checkbox)").parent().remove();
+
+          $.each(headingKeys, function(index, headingKey) {
+            if( headingKey != "id" ) {
+              $("#landingTable tbody #row"+userData["id"]).append(`
+                <td>
+                  `+userData[headingKey]+`
+                </td>
+              `);
+            }
+          });
+          updateRowsCount();
+          console.log(userData);
+        });
+      }
     }
 
-    function addRow() {
+    function insertInputsRow() {
       $("#addRowButton").prop("disabled", true);
 
       var rowIdHash = {};
@@ -143,7 +163,7 @@ $(document).ready(function(){
       });
       // To remove spaces before
       idsToDelete["ids"] = ids.substring(1);
-      console.log(idsToDelete);
+
       $.ajax({
         url: "http://localhost:3000/deleteUser",
         type: 'POST',
@@ -151,11 +171,11 @@ $(document).ready(function(){
         data: JSON.stringify(idsToDelete),
         success: (res) => {
           console.log("Delete User Request Sent.");
-          console.log(idsToDelete);
           idsToDelete = idsToDelete["ids"].split(" ");
           $.each(idsToDelete, function(index, id) {
             $("#landingTable #row"+id).remove();
           });
+          console.log(idsToDelete);
         },
         error: (xhr, status, error) => {
           console.log("Delete User Request Failed.");
