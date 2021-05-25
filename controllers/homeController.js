@@ -263,10 +263,10 @@ router.post("/userData", function (req, res) {
   // This goes in Service
   db.push(userData);
 
-  //console.log(db);
+  console.log(db);
 
   res.set('Content-Type', 'application/json');
-  res.status(200).send({"message": "User Added"});
+  res.status(200).send(userData);
 });
 
 router.post("/deleteUser", function (req, res) {
@@ -275,10 +275,11 @@ router.post("/deleteUser", function (req, res) {
   let idsToDelete = req.body["ids"];
   let tempIndex;
 
+  idsToDelete = idsToDelete.split(" ");
   // This goes in Service
   for(let i=0; i<idsToDelete.length; i++) {
     tempIndex = db.findIndex(function(userData) {
-      if( userData["id"] === idsToDelete[i] ) {
+      if( userData["id"] === Number(idsToDelete[i]) ) {
         return true;
       }
     });

@@ -24,14 +24,20 @@ $(document).ready(function(){
       $("#deleteRowButton").click(function() {
         deleteRow();
       });
+
+      $(document).keypress(function(event) {
+        if(event.keyCode == 13) {
+          updateRow();
+        }
+      });
     }
 
     function sendUserData(userData) {
-      console.log(userData);
-      $.ajax({
+      return $.ajax({
         url: "http://localhost:3000/userData",
         type: 'POST',
         data: userData,
+        cache: false,
         success: (res) => {
           console.log("Send User Data Sent.");
         },
@@ -39,9 +45,44 @@ $(document).ready(function(){
           console.log("Send User Data Failed.");
         }
       });
+    }
 
-      return new Promise(function(resolve, reject) {
-        resolve(userData);
+    function updateRow() {
+      var headingKeys = Object.keys(headings);
+
+      var userData = {};
+
+      var newRowId =  $("#landingTable tbody").children().last()[0].id;
+      //remove "row" in "row{id}" to get newRowId
+      newRowId = newRowId.substr(3);
+
+      userData["id"] = newRowId;
+      $("#landingTable tbody #row"+newRowId+" input:not(:checkbox)").each(function(index, userInput) {
+          // +1 becuase we added ID already into our userData above
+          // userData["id"] should be added separetly because this JQuery
+          // selector starts from 3rd feild ignoring check box and ID however,
+          // our headingKeys starts from ID, to counter that 1 offset we add +1
+          userData[headingKeys[index+1]] = userInput.value;
+      });
+      // Do this only after User Data sucessfully sent to server
+      $.when(sendUserData(userData)).done(function(userData) {
+        $("#addRowButton").prop("disabled", false);
+
+        var headingKeys = Object.keys(headings);
+
+        $("#landingTable tbody #row"+userData["id"]+" input:not(:checkbox)").parent().remove();
+
+        $.each(headingKeys, function(index, headingKey) {
+          if( headingKey != "id" ) {
+            $("#landingTable tbody #row"+userData["id"]).append(`
+              <td>
+                `+userData[headingKey]+`
+              </td>
+            `);
+          }
+        });
+
+        updateRowsCount();
       });
     }
 
@@ -85,37 +126,6 @@ $(document).ready(function(){
       });
 
       $("#landingTable tbody #row"+newRowId).click();
-
-      $(document).keypress(function(event) {
-        if(event.keyCode == 13 ) {
-          var userData = {};
-          userData["id"] = newRowId;
-          $("#landingTable tbody #row"+newRowId+" input:not(:checkbox)").each(function(index, userInput) {
-              // +1 becuase we added ID already into our userData above
-              // userData["id"] should be added separetly because this JQuery
-              // selector starts from 3rd feild ignoring check box and ID however,
-              // our headingKeys starts from ID, to counter that 1 offset we add +1
-              userData[headingKeys[index+1]] = userInput.value;
-          });
-          sendUserData(userData).then(function(userData) {
-            $("#addRowButton").prop("disabled", false);
-
-            $("#landingTable tbody #row"+newRowId+" input:not(:checkbox)").parent().remove();
-
-            $.each(headingKeys, function(index, headingKey) {
-              if( headingKey != "id" ) {
-                $("#landingTable tbody #row"+newRowId).append(`
-                  <td>
-                    `+userData[headingKey]+`
-                  </td>
-                `);
-              }
-            });
-
-            updateRowsCount();
-          });
-        }
-      });
     }
 
     function deleteRow() {
@@ -146,7 +156,6 @@ $(document).ready(function(){
           $.each(idsToDelete, function(index, id) {
             $("#landingTable #row"+id).remove();
           });
-
         },
         error: (xhr, status, error) => {
           console.log("Delete User Request Failed.");
@@ -203,21 +212,21 @@ $(document).ready(function(){
             dataType: 'text', // added data type
             success: (res) => {
               console.log("Fetch Table Data Success");
-              insertTable(JSON.parse(res)).then(function(tableData) {
-                $("#tableButtonsDiv").prop('hidden', false);
-                $("#tableButtonsDiv").prop('hidden', false);
-
-                $("#rowsCount").html(tableData.length);
-                $("#selectedRowsCount").html(0);
-
-                tableCounters();
-                attachButtonEventListners();
-              });
+              insertTable(JSON.parse(res));
             },
             error: (xhr, status, error) => {
               console.log("Fetch Table Data Error");
               console.log(xhr);
             }
+        }).then(function(tableData) {
+          $("#tableButtonsDiv").prop('hidden', false);
+          $("#tableButtonsDiv").prop('hidden', false);
+
+          $("#rowsCount").html(tableData.length);
+          $("#selectedRowsCount").html(0);
+
+          tableCounters();
+          attachButtonEventListners();
         });
         // Optimize Row Id
         function insertTable(tableData) {
@@ -262,10 +271,6 @@ $(document).ready(function(){
                 </td>
               `);
             });
-          });
-
-          return new Promise(function(resolve, reject) {
-            resolve(tableData);
           });
         }
     }
