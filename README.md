@@ -16,7 +16,7 @@ Code is Extendable for:
 Code implementation has to change for:
 1) Double click on fields to edit it.
 
-ScreenShots
+Screenshots
 
 ![image](https://user-images.githubusercontent.com/34181215/119453794-6e941380-bd55-11eb-8228-94dea3fa401c.png)
 
