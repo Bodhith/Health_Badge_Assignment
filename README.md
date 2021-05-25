@@ -1,6 +1,7 @@
 # HEALTHBADGE_ASSIGNMENT
 
 Webpage is responsive.
+Since localhost, the CORS are set to 'Allow All'.
 User doesn't have to fill all the input fields, but atleast one is madatory.
 
 Important Instructions:
